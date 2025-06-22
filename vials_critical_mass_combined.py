@@ -203,8 +203,8 @@ avg_total_vials_list_ani =  [total_vials_list_ani[:,i].sum()/len(total_vials_lis
 #Histogram of N players at X packs
 hist_vials_per_player = plt.hist(total_vials_list[:,int((histogram_snapshot/pack_increment)-1)],histogram_bins) 
 plt.title(f'Vial distribuition of {simulations} players @{histogram_snapshot} packs')
-plt.xlabel('Card Packs')
-plt.ylabel('Vials liquefiable')
+plt.xlabel('Vials liquefiable')
+plt.ylabel('Players')
 plt.text(7000,1200,f'Median : {int(np.median(total_vials_list[:,int((histogram_snapshot/pack_increment)-1)]))}')
 plt.show(hist_vials_per_player)
 
