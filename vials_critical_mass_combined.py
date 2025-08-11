@@ -51,7 +51,7 @@ rate_dict_l = {
 #Vials liquefied per Rarity
 vials_liquefied_non = {
      'Bronze'    : 10
-    ,'Silver'    : 20
+    ,'Silver'    : 50
     ,'Gold'      : 200
     ,'Legendary' : 1200  
     ,'Ticket'    : 0
@@ -60,7 +60,7 @@ vials_liquefied_non = {
 #Vials liquefied per Animated Rarity
 vials_liquefied_ani = {
      'Bronze'    : 30
-    ,'Silver'    : 50
+    ,'Silver'    : 120
     ,'Gold'      : 450
     ,'Legendary' : 2500  
     ,'Ticket'    : 0
@@ -132,7 +132,7 @@ for sim_num in range(0,simulations):
     new_vial_total_ani = 0
     #Pulling Session
     for pack in range(0,num_packs):
-        count_pack_pity += 1
+        count_pack_pity += 1 #disabling this removes legendary pity
         for card in range(0,cards_in_pack):
             count_card_pity += 1 
             if count_pack_pity == num_pack_pity and card == cards_in_pack - 1: #Legendary: No leggo in 10 packs and is the 8th pack
@@ -182,7 +182,8 @@ plt.title(f'Vials per {pack_increment} packs (1 player)')
 plt.legend(['Normal','Animated'])
 plt.xlabel('Card Packs')
 plt.ylabel('Vials liquefiable')
-plt.text(0,4000,f'100 Packs = {int(vial_increment_list[0][int((histogram_snapshot/pack_increment)-1)])}-{int(vial_increment_list_ani[0][int((histogram_snapshot/pack_increment)-1)])}')
+plt.text(0,7000,f'100 Packs = {int(vial_increment_list[0][int((histogram_snapshot/pack_increment)-1)])}-{int(vial_increment_list_ani[0][int((histogram_snapshot/pack_increment)-1)])}')
+#plt.text(0,7000,f'Average = {int(np.mean(vial_increment_list))}')
 plt.show()
 
 total_mass = plt.plot(pack_increment_list,total_vials_list[0])
@@ -190,7 +191,7 @@ total_mass_ani = plt.plot(pack_increment_list,total_vials_list_ani[0])
 plt.title('Vials total (1 player)')
 plt.xlabel('Card Packs')
 plt.ylabel('Vials liquefiable')
-plt.text(0,40000,f'100 Packs = {int(total_vials_list[0][int((histogram_snapshot/pack_increment)-1)])}-{int(total_vials_list_ani[0][int((histogram_snapshot/pack_increment)-1)])}')
+plt.text(0,100000,f'100 Packs = {int(total_vials_list[0][int((histogram_snapshot/pack_increment)-1)])}-{int(total_vials_list_ani[0][int((histogram_snapshot/pack_increment)-1)])}')
 plt.show()
 
 
@@ -205,7 +206,7 @@ hist_vials_per_player = plt.hist(total_vials_list[:,int((histogram_snapshot/pack
 plt.title(f'Vial distribuition of {simulations} players @{histogram_snapshot} packs')
 plt.xlabel('Vials liquefiable')
 plt.ylabel('Players')
-plt.text(7000,1200,f'Median : {int(np.median(total_vials_list[:,int((histogram_snapshot/pack_increment)-1)]))}')
+plt.text(11000,500,f'Median : {int(np.median(total_vials_list[:,int((histogram_snapshot/pack_increment)-1)]))}')
 plt.show(hist_vials_per_player)
 
 
@@ -216,7 +217,9 @@ plt.title(f'Average Vials per {pack_increment} packs (n={simulations})')
 plt.legend(['Normal','Animated'])
 plt.xlabel('Card Packs')
 plt.ylabel('Vials liquefiable')
-plt.text(0,2500,f'100 Packs = {int(avg_vial_increment_list[int((histogram_snapshot/pack_increment)-1)])}-{int(avg_vial_increment_list_ani[int((histogram_snapshot/pack_increment)-1)])}')
+plt.text(0,3740,f'100 Packs = {int(avg_vial_increment_list[int((histogram_snapshot/pack_increment)-1)])}-{int(avg_vial_increment_list_ani[int((histogram_snapshot/pack_increment)-1)])}')
+#plt.text(100,4200,f'Average = {int(np.mean(avg_vial_increment_list))}')
+plt.show()
 plt.show()
 
 avg_total_mass = plt.plot(pack_increment_list,avg_total_vials_list)
@@ -225,5 +228,5 @@ plt.title(f'Average Vials total (n={simulations})')
 plt.legend(['Normal','Animated'])
 plt.xlabel('Card Packs')
 plt.ylabel('Vials liquefiable')
-plt.text(0,40000,f'100 Packs = {int(avg_total_vials_list[int((histogram_snapshot/pack_increment)-1)])}-{int(avg_total_vials_list_ani[int((histogram_snapshot/pack_increment)-1)])}')
+plt.text(0,100000,f'100 Packs = {int(avg_total_vials_list[int((histogram_snapshot/pack_increment)-1)])}-{int(avg_total_vials_list_ani[int((histogram_snapshot/pack_increment)-1)])}')
 plt.show()
