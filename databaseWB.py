@@ -10,7 +10,8 @@ import pandas as pd
 
 #Used to get all card set info
 #initial_link = 'https://shadowverse-wb.com/en/deck/cardslist' 
-initial_link = 'https://shadowverse-wb.com/en/deck/cardslist/card/?card_id=10012110'
+#initial_link = 'https://shadowverse-wb.com/en/deck/cardslist/card/?card_id=10012110'
+initial_link = 'https://shadowverse-wb.com/en/deck/detail/?hash=2.1.c9iw.c9iw.c9iw.cCNE.cCNE.cCNE.cCQM.cCQM.cCQM.cY5s.cY5s.cY5s.cYb6.cYb6.cYb6.cabE.cabE.cabE.canu.canu.canu.cb1M.cwZU.cwZU.cwZU.cwl-.cwl-.cwl-.cw_m.cw_m.cw_m.czCO.czCO.czCO.czFM.czFM.czFM.czU-.czU-.czU-'
 source = requests.get(initial_link).text
 soup = bs(source, 'lxml')
 pretty_soup = soup.prettify()
@@ -140,4 +141,45 @@ card_database_df = pd.DataFrame(
 with pd.ExcelWriter("output.xlsx") as writer:
     card_set_df.to_excel(writer, sheet_name='Set Index')
     card_database_df.to_excel(writer, sheet_name='Card Database')
+  
+    
+  
+    
+from selenium import webdriver
+from bs4 import BeautifulSoup as bs
+import requests
+import sys
+
+driver = webdriver.Chrome()
+driver.get("https://shadowverse-wb.com/en/deck/detail/?hash=2.1.c9iw.c9iw.c9iw.cCNE.cCNE.cCNE.cCQM.cCQM.cCQM.cY5s.cY5s.cY5s.cYb6.cYb6.cYb6.cabE.cabE.cabE.canu.canu.canu.cb1M.cwZU.cwZU.cwZU.cwl-.cwl-.cwl-.cw_m.cw_m.cw_m.czCO.czCO.czCO.czFM.czFM.czFM.czU-.czU-.czU-")
+html = driver.page_source
+soup = bs(html, 'lxml')
+pretty_soup = soup.prettify()
+#regex = re.compile('.*listing-col-.*')
+for EachPart in soup.select('li[class*="card-wrapper"]'):
+    print(EachPart)
+def LogInBooth(self):
+    url = "https://shadowverse-wb.com/en/deck/detail/?hash=2.1.c9iw.c9iw.c9iw.cCNE.cCNE.cCNE.cCQM.cCQM.cCQM.cY5s.cY5s.cY5s.cYb6.cYb6.cYb6.cabE.cabE.cabE.canu.canu.canu.cb1M.cwZU.cwZU.cwZU.cwl-.cwl-.cwl-.cw_m.cw_m.cw_m.czCO.czCO.czCO.czFM.czFM.czFM.czU-.czU-.czU-" #force cache into EN
+    if self.webdriver_type == "Chrome":
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        chrome_options.add_experimental_option("prefs", prefs)
+        self.driver = webdriver.Chrome(executable_path = self.webdriver_path, chrome_options=chrome_options)
+        self.driver.get(url)
+    elif self.webdriver_type == "Edge":
+        self.driver = webdriver.Edge(executable_path = self.webdriver_path)
+        self.driver.get(url)
+    elif self.webdriver_type == "Firefox":
+        self.driver = webdriver.Firefox(executable_path = self.webdriver_path)
+        self.driver.get(url)
+    else:
+        print("Invalid Webdriver")
+        sys.exit()  
+    
+  
+    
+  
+    
+  
+    
   
