@@ -146,39 +146,85 @@ with pd.ExcelWriter("output.xlsx") as writer:
   
     
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 import requests
 import sys
+import time
 
 driver = webdriver.Chrome()
-driver.get("https://shadowverse-wb.com/en/deck/detail/?hash=2.1.c9iw.c9iw.c9iw.cCNE.cCNE.cCNE.cCQM.cCQM.cCQM.cY5s.cY5s.cY5s.cYb6.cYb6.cYb6.cabE.cabE.cabE.canu.canu.canu.cb1M.cwZU.cwZU.cwZU.cwl-.cwl-.cwl-.cw_m.cw_m.cw_m.czCO.czCO.czCO.czFM.czFM.czFM.czU-.czU-.czU-")
+driver.get("https://shadowverse-wb.com/en/deck/cardslist/?page=1&class=0,1,2,3,4,5,6,7&cost=0,1,2,3,4,5,6,7,8,9,10")
 html = driver.page_source
 soup = bs(html, 'lxml')
 pretty_soup = soup.prettify()
 #regex = re.compile('.*listing-col-.*')
 for EachPart in soup.select('li[class*="card-wrapper"]'):
     print(EachPart)
-def LogInBooth(self):
-    url = "https://shadowverse-wb.com/en/deck/detail/?hash=2.1.c9iw.c9iw.c9iw.cCNE.cCNE.cCNE.cCQM.cCQM.cCQM.cY5s.cY5s.cY5s.cYb6.cYb6.cYb6.cabE.cabE.cabE.canu.canu.canu.cb1M.cwZU.cwZU.cwZU.cwl-.cwl-.cwl-.cw_m.cw_m.cw_m.czCO.czCO.czCO.czFM.czFM.czFM.czU-.czU-.czU-" #force cache into EN
-    if self.webdriver_type == "Chrome":
-        chrome_options = webdriver.ChromeOptions()
-        prefs = {"profile.managed_default_content_settings.images": 2}
-        chrome_options.add_experimental_option("prefs", prefs)
-        self.driver = webdriver.Chrome(executable_path = self.webdriver_path, chrome_options=chrome_options)
+
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import sys
+import time
+class SVWBScraper:
+    def __init__(self):
+        self.driver = None
+        self.load_buffer = 1
+        self.latency = 3
+
+    def Open(self):
+        url = "https://shadowverse-wb.com/en/deck/cardslist/?page=1&class=0,1,2,3,4,5,6,7&cost=0,1,2,3,4,5,6,7,8,9,10" #force cache into EN
+        self.driver = webdriver.Chrome()
         self.driver.get(url)
-    elif self.webdriver_type == "Edge":
-        self.driver = webdriver.Edge(executable_path = self.webdriver_path)
-        self.driver.get(url)
-    elif self.webdriver_type == "Firefox":
-        self.driver = webdriver.Firefox(executable_path = self.webdriver_path)
-        self.driver.get(url)
-    else:
-        print("Invalid Webdriver")
-        sys.exit()  
+        #self.LoadingBuffertoClick('//a[@href="https://www.youtube.com/@shadowversegame"]','Waiting...','2/3 Pixiv SignIn Opened')
+        self.LoadingBuffertoClick('//p[@class="text"][text()="Advanced Search"]','Waiting...','Advanced Search')
+        
+        for value in range(10000,10003 + 1):
+            self.LoadingBuffertoClick(f'//input[@type="checkbox"][@name="pack"][@value="{value}"]','Waiting...','Basic')     
+
+        
+    def LoadingBuffertoClick(self, elementname, fail_msg, success_msg):
+        while True:
+            try:
+                time.sleep(self.load_buffer)
+                self.driver.find_element(By.XPATH,(elementname)).click()
+                print(success_msg)
+                break
+            except TimeoutError:
+                print(str(sys.exc_info()[0]))
+            except Exception:
+                print(fail_msg)
+                #print(f"Error: {str(e)}") #if you want to show error msg
+                print(str(sys.exc_info()[0]))
+                time.sleep(self.latency)
+                continue        
+            
+scraper = SVWBScraper()
+scraper.Open()
     
   
     
   
+    
+  
+    # import webdriver
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+# create webdriver object
+driver = webdriver.Chrome()
+
+# enter keyword to search
+keyword = "geeksforgeeks"
+
+# get geeksforgeeks.org
+driver.get("https://www.geeksforgeeks.org/")
+
+# get element 
+element = driver.find_element(By.XPATH, "//form[input/@name ='search']")
+
+# print complete element
+print(element)
     
   
     
