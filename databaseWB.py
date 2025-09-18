@@ -2,7 +2,7 @@
 """
 SV Portal Database
 """
-
+'''
 import requests
 import random as rand
 from bs4 import BeautifulSoup as bs
@@ -160,12 +160,20 @@ pretty_soup = soup.prettify()
 #regex = re.compile('.*listing-col-.*')
 for EachPart in soup.select('li[class*="card-wrapper"]'):
     print(EachPart)
-
+'''
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup as bs
+import requests
 import sys
 import time
+from PIL import Image
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\admin\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+options = "--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789"
+
 class SVWBScraper:
     def __init__(self):
         self.driver = None
@@ -173,16 +181,61 @@ class SVWBScraper:
         self.latency = 3
 
     def Open(self):
-        url = "https://shadowverse-wb.com/en/deck/cardslist/?page=1&class=0,1,2,3,4,5,6,7&cost=0,1,2,3,4,5,6,7,8,9,10" #force cache into EN
+        url = "https://shadowverse-wb.com/en/deck/cardslist/" #force cache into EN
         self.driver = webdriver.Chrome()
         self.driver.get(url)
-        #self.LoadingBuffertoClick('//a[@href="https://www.youtube.com/@shadowversegame"]','Waiting...','2/3 Pixiv SignIn Opened')
         self.LoadingBuffertoClick('//p[@class="text"][text()="Advanced Search"]','Waiting...','Advanced Search')
-        
-        for value in range(10000,10003 + 1):
-            self.LoadingBuffertoClick(f'//input[@type="checkbox"][@name="pack"][@value="{value}"]','Waiting...','Basic')     
+        self.LoadingBuffertoClick('//button[@class="onetrust-close-btn-handler onetrust-close-btn-ui banner-close-button ot-close-icon"]','Waiting...','No cookies')         
+        html = self.driver.page_source
+        soup = bs(html, 'lxml')
+        card_pack_render = soup.find('ul', {'class':'card-pack-list render'})
+        pack_list = [] 
+        card_pack_name_tags = card_pack_render.find_all('span')
+        card_pack_num_tags = card_pack_render.find_all('input')  
+        for set_count in range(0,len(card_pack_name_tags)):
+            pack_list.append({'name' : card_pack_name_tags[set_count].text, 'value' : card_pack_num_tags[set_count]['value']})
+            print(card_pack_name_tags[set_count].text,card_pack_num_tags[set_count]['value'])
 
-        
+        # for pack in pack_list:
+        #     pack_value = pack['value']
+        #     self.LoadingBuffertoClick(f'//input[@type="checkbox"][@name="pack"][@value="{pack_value}"]','Waiting...','Basic')     
+            
+        for pack in pack_list:
+            url = f'https://shadowverse-wb.com/en/deck/cardslist/?card_set={pack["value"]}'
+            self.driver.get(url)
+            time.sleep(self.latency)
+            html = self.driver.page_source
+            soup = bs(html, 'lxml')   
+            card_count = int(soup.find('span',{'class':'num'}).text)
+            print("CARDS", card_count, 'RESULTS')
+            
+            page = 1
+            while card_count > 0:
+                card_list = soup.find('ul',{'id':'card-list'})
+                card_list = card_list.find_all('a')
+                              
+                for card in card_list:
+                    img_url = f'https://shadowverse-wb.com/{card.find("img")["src"]}'
+                    im = Image.open(requests.get(img_url, stream=True).raw)
+                    im = im.crop((20,50,110,140))
+                    text = pytesseract.image_to_string(im, config=options)                
+                    print(card.find('img')['alt'],card['href'][-8:],text)
+                    
+                card_count = card_count - len(card_list)
+                print(card_count)
+                
+                if card_count > 0:
+                    page += 1
+                    url = f'https://shadowverse-wb.com/en/deck/cardslist/?card_set={pack["value"]}&page={page}'
+                    self.driver.get(url)
+                    time.sleep(self.latency)
+                    html = self.driver.page_source
+                    soup = bs(html, 'lxml')  
+                else: 
+                    break
+            
+            #print(soup.find('span', {'class':'num'}))
+  
     def LoadingBuffertoClick(self, elementname, fail_msg, success_msg):
         while True:
             try:
@@ -205,7 +258,7 @@ scraper.Open()
   
     
   
-    
+'''    
   
     # import webdriver
 from selenium import webdriver
@@ -226,6 +279,6 @@ element = driver.find_element(By.XPATH, "//form[input/@name ='search']")
 # print complete element
 print(element)
     
-  
+ ''' 
     
   
