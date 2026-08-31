@@ -1,0 +1,8 @@
+~~Objective~~
+t1 executor 1
+t3 nurturing 1
+t4 mother 1
+
+~~Mulligan_Rules~~
+executor 1
+mother 1
