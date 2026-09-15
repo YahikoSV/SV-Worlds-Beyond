@@ -1,0 +1,12 @@
+~~Objective~~
+t1 $type:follower 1
+t2 Sharp 1
+t2 Scout 1
+t2 Yidmetra 1
+t3 Gunner 1
+t6 Zeta 1
+t7 Rough 1
+t7 Barbaros 1
+~~Mulligan_Rules~~
+$cost:2 1
+Barbaros 1

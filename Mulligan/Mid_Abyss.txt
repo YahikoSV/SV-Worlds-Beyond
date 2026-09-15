@@ -1,0 +1,17 @@
+~~Objective~~
+t1 $cost:1 1
+t2 $cost:2 1
+t3 $cost:2 2
+t3 baal 1
+t4 feline 1
+t5 feline 1
+t6 adahime 1
+t7 adahime 1
+t7 garodeth 1
+t8 garodeth 1
+t9 reaper 1
+
+~~Mulligan_Rules~~
+$cost:1 1
+$cost:2 1
+feline 1

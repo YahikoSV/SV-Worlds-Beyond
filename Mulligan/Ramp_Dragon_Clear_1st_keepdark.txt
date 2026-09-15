@@ -1,0 +1,20 @@
+~~Objective~~
+t2 $cost:2 1
+t2 dragonewt 1
+t2 sloth 1
+t3 dragonsign 1
+t3 lumiore 1
+t4 dark 1
+t4 dragonewt 1
+t4 sloth 1
+t4 zooey 1
+t5 zooey 1
+t5 $cost:7 1
+t6 $cost:7 1
+t5 norma 1
+t6 norma 1
+~~Mulligan_Rules~~
+dragonewt 1
+dragonsign 1
+lumiore 1
+dark 1

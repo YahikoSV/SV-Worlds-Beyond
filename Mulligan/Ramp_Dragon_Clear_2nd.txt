@@ -1,0 +1,15 @@
+~~Objective~~
+t2 dragonewt 1
+t2 sloth 1
+t3 dragonsign 1
+t3 lumiore 1
+t3 dark 1
+t4 zooey 1
+t5 $cost:7 1
+t6 $cost:7 1
+t7 burnite 1
+t8 erntz 1
+~~Mulligan_Rules~~
+dragonewt 1
+dragonsign 1
+lumiore 1
